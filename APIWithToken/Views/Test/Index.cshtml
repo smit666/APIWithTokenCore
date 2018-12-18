@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<script src="~/App/jquery.js"></script>
+<script src="~/App/jquery.min.js"></script>
+<h2>Index</h2>
+<h3 id="reqH"></h3>
+<input id="btnAuth" type="button" value="Authorize" /><br />
+<input id="btnRequest" type="button" value="Request" />
+<br />
+<br />
+<input id="btnUnauth" type="button" value="Unauthorize" />
+
+<input id="Hidden1" type="hidden" />
+
+<script>
+    $(document).ready(function () {
+        $.ajaxSetup({
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Authorization", "Bearer " + $('#Hidden1').val());
+            }
+        });
+        $('#btnRequest').on('click', function () {
+
+            $.ajax({
+                url: 'http://localhost:55615/api/values',
+                type: 'Get',
+                success: function (resp) {
+                    console.log(resp);
+                }
+            });
+
+        });
+        $('#btnAuth').on('click', function () {
+
+            $.ajax({
+                url: 'http://localhost:55615/api/Token/smit/smit',
+                type: 'Get',
+                success: function (resp) {
+                    $('#Hidden1').val(resp);
+                }
+            });
+
+        });
+
+    });
+</script>

@@ -13,7 +13,7 @@ namespace APIWithToken.Controllers
     
     public class TokenController:Controller
     {
-        private const string SECRET_KEY = "abcdef";
+        private const string SECRET_KEY = "smitthakur666palghar";
         public static readonly SymmetricSecurityKey SIGNING_KEY = new
                       SymmetricSecurityKey(Encoding.UTF8.GetBytes(SECRET_KEY));
 
