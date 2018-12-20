@@ -28,7 +28,8 @@
                 url: 'http://localhost:55615/api/values',
                 type: 'Get',
                 success: function (resp) {
-                    console.log(resp);
+                    var d = new Date();
+                    console.log(resp + '-' + d);
                 }
             });
 

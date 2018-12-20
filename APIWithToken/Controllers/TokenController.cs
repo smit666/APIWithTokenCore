@@ -36,7 +36,7 @@ namespace APIWithToken.Controllers
             var token = new JwtSecurityToken(
                 claims: new Claim[] { new Claim(ClaimTypes.Name, username) },
                 notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                expires: new DateTimeOffset(DateTime.Now.AddMinutes(60)).DateTime,
+                expires: new DateTimeOffset(DateTime.Now.AddMinutes(1)).DateTime,
                 signingCredentials: new SigningCredentials(SIGNING_KEY,
                                                     SecurityAlgorithms.HmacSha256)
                 );

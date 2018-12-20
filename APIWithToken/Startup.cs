@@ -53,8 +53,9 @@ namespace APIWithToken
                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateIssuerSigningKey = true,
-                    ValidateLifetime = true,
+                    ValidateLifetime = false,
                     ClockSkew = TimeSpan.FromMinutes(5)
+                    
                 };
             });
         }
