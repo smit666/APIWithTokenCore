@@ -34,13 +34,16 @@ namespace APIWithToken.Controllers
         private string GenerateToken(string username)
         {
             var token = new JwtSecurityToken(
+                issuer: "Blinkingcaret",
+                audience: "Everyone",
                 claims: new Claim[] { new Claim(ClaimTypes.Name, username) },
-                notBefore: new DateTimeOffset(DateTime.Now).DateTime,
-                expires: new DateTimeOffset(DateTime.Now.AddMinutes(1)).DateTime,
+                notBefore: DateTime.Now,
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: new SigningCredentials(SIGNING_KEY,
                                                     SecurityAlgorithms.HmacSha256)
+       
                 );
-
+          //  var a = DateTime.Now;
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
