@@ -5,12 +5,11 @@
 
 <script src="~/App/jquery.js"></script>
 <script src="~/App/jquery.min.js"></script>
-<h2>Index</h2>
+<h2>Token Based Authorization</h2>
 <h3 id="reqH"></h3>
-<input id="btnAuth" type="button" value="Authorize" /><br />
+<input id="btnAuth" type="button" value="Authorize" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="btnRequest" type="button" value="Request" />
-<br />
-<br />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input id="btnUnauth" type="button" value="Unauthorize" />
 
 <input id="Hidden1" type="hidden" />
@@ -30,6 +29,11 @@
                 success: function (resp) {
                     var d = new Date();
                     console.log(resp + '-' + d);
+                    alert('You are Authorized Access!')
+                },
+                error: function (e) {
+                    alert('You are Not Authorized Access!')
+
                 }
             });
 
@@ -41,10 +45,18 @@
                 type: 'Get',
                 success: function (resp) {
                     $('#Hidden1').val(resp);
+                    alert('Token Generated!')
                 }
             });
 
         });
+        $('#btnUnauth').on('click', function () {
 
+         
+            $('#Hidden1').val('');
+            alert('Token Deleted!');
+               
+
+        });
     });
 </script>
