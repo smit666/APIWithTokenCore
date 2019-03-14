@@ -14,5 +14,13 @@ namespace APIWithToken.Controllers
         {
             return View();
         }
+
+
+        [HttpGet]
+        [Route("api/Test")]
+        public string GetReq()
+        {
+            return "ok";
+        }
     }
 }
