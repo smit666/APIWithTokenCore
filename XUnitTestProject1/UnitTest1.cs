@@ -39,6 +39,7 @@ namespace XUnitTestProject1
 
             //Assert  
             Assert.IsType<ObjectResult>(data);
+        
         }
         [Fact]
         public void Test_TokenFailed()

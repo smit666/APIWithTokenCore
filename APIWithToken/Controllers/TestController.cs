@@ -20,7 +20,7 @@ namespace APIWithToken.Controllers
         [Route("api/Test")]
         public string GetReq()
         {
-            return "ok";
+            return "1";
         }
     }
 }
