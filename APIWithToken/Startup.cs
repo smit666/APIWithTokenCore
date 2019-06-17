@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using APIWithToken.Controllers;
+using APIWithToken.Models;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -29,6 +33,12 @@ namespace APIWithToken
                 .AddJsonFile("appsettings.json", false, true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true)
                 .AddEnvironmentVariables();
+
+            if (env.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+
             Configuration = builder.Build();
             AppRootPath = env.WebRootPath;
             ContentPath = env.ContentRootPath;
@@ -40,14 +50,28 @@ namespace APIWithToken
         public void ConfigureServices(IServiceCollection services)
         {
             string appWebRootPath = AppRootPath;
+          services.AddIdentity<ApplicationUser, IdentityRole>();
+
+            services.AddDbContext<ApplicationDbContext>(options =>
+          options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // IdentityModelEventSource.ShowPII = true;
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/api/CoreAuthentication/home");
+
+//            services.AddIdentity<System.Web.Security.Entities.User<int>, IdentityRole>()
+//.AddSignInManager<SignInManager<ApplicationUser>>()
+//.AddDefaultTokenProviders();
+
+
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = "JwtBearer"; 
+                options.DefaultAuthenticateScheme = "JwtBearer";
                 options.DefaultChallengeScheme = "JwtBearer";
-            }).AddJwtBearer("JwtBearer", jwtOptions=> {
+                //options.DefaultAuthenticateScheme = GoogleDefaults.AuthenticationScheme;
+                //options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+            }).AddJwtBearer("JwtBearer", jwtOptions =>
+            {
                 jwtOptions.TokenValidationParameters = new TokenValidationParameters()
                 {
                     IssuerSigningKey = TokenController.SIGNING_KEY,
@@ -56,7 +80,7 @@ namespace APIWithToken
                     ValidateIssuerSigningKey = true,
                     ValidateLifetime = true,
                     //ClockSkew = TimeSpan.FromMinutes(5)
-                     ClockSkew = TimeSpan.Zero
+                    ClockSkew = TimeSpan.Zero
                 };
                 jwtOptions.Events = new JwtBearerEvents
                 {
@@ -69,8 +93,14 @@ namespace APIWithToken
                         return Task.CompletedTask;
                     }
                 };
+            }).AddGoogle(googleOptions =>
+            {
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
             });
         }
+   
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -79,6 +109,7 @@ namespace APIWithToken
             {
                 app.UseDeveloperExceptionPage();
             }
+          //  app.UseIdentity();
             app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc();

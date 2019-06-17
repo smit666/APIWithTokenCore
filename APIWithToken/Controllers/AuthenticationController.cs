@@ -6,21 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace APIWithToken.Controllers
 {
-    public class TestController : Controller
+    [Route("api/[controller]")]
+    public class AuthenticationController : Controller
     {
-        [HttpGet]
-        [Route("api/Test")]
+
         public IActionResult Index()
         {
             return View();
         }
-
-
-        //[HttpGet]
-        //[Route("api/Test")]
-        //public string GetReq()
-        //{
-        //    return "1";
-        //}
     }
 }

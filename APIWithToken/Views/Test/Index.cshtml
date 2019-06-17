@@ -2,9 +2,14 @@
 @{
     ViewData["Title"] = "Index";
 }
-
+<link href="~/App/jquery.timeentry.css" rel="stylesheet" />
+<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/south-street/jquery-ui.css">
 <script src="~/App/jquery.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 <script src="~/App/jquery.min.js"></script>
+<script src="~/App/jquery.plugin.min.js"></script>
+<script src="~/App/jquery.timeentry.js"></script>
+<script src="~/App/Mousewheel.js"></script>
 <h2>Token Based Authorization</h2>
 <h3 id="reqH"></h3>
 <input id="btnAuth" type="button" value="Authorize" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -13,6 +18,7 @@
 <input id="btnUnauth" type="button" value="Unauthorize" />
 
 <input id="Hidden1" type="hidden" />
+<input id="txtTime" type="text" value="00:00" />
 
 <script>
     $(document).ready(function () {
@@ -52,11 +58,21 @@
         });
         $('#btnUnauth').on('click', function () {
 
-         
+
             $('#Hidden1').val('');
             alert('Token Deleted!');
-               
+
 
         });
+
+
+
+        $('#txtTime').timeEntry({ show24Hours: true }).change(function () {
+            //var log = $('#log');
+            //log.val(log.val() + ($('#txtTime').val() || 'blank') + '\n');
+
+            console.log($('#txtTime').val() || 'blank')
+        });
+
     });
 </script>
